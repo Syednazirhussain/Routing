@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C68F9DA-2B57-44A0-A3D0-BD2C72996FCF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RoutingWinApp</RootNamespace>
+    <AssemblyName>RoutingWinApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <AppCfgType>App</AppCfgType>
+    <InlineAppCfgTransforms>false</InlineAppCfgTransforms>
+    <BuildTimeAppCfgTransformsEnabled>true</BuildTimeAppCfgTransformsEnabled>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>RoutingWinApp.CFRoutingWinAppMain</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>dt-logo.png.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-AWS|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-AWS\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IBM.Data.DB2.iSeries, Version=12.0.0.0, Culture=neutral, PublicKeyToken=9cdb2ebfb1f93a26, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\SharedControls\ClientAccess_V7R1M0\IBM.Data.DB2.iSeries.dll</HintPath>
+    </Reference>
+    <Reference Include="linq2db, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f19f8aed7feff67e, processorArchitecture=MSIL">
+      <HintPath>..\packages\linq2db.1.0.1.1\lib\net40\linq2db.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.2.0.1.2\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CFBusinessLogic.cs" />
+    <Compile Include="CFDispatchTrackExportOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CFDispatchTrackExportOrders.Designer.cs">
+      <DependentUpon>CFDispatchTrackExportOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CFDispatchTrackImportOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CFDispatchTrackImportOrders.Designer.cs">
+      <DependentUpon>CFDispatchTrackImportOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CFDispatchTrackConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CFDispatchTrackConfiguration.Designer.cs">
+      <DependentUpon>CFDispatchTrackConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CFDispatchTrack.cs" />
+    <Compile Include="CFDispatchTrackApplicationSettings.cs" />
+    <Compile Include="CFRoutingWinAppMain.cs" />
+    <Compile Include="CoreClasses.cs" />
+    <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="AppLogFile.cs" />
+    <Compile Include="DataAccess.cs" />
+    <Compile Include="DataModel.cs" />
+    <Compile Include="MSWindowsLogFunctions.cs" />
+    <Compile Include="GlobalVars.cs" />
+    <Compile Include="FormLogger.cs" />
+    <Compile Include="Massive400.cs" />
+    <Compile Include="NodeAPI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CFRoutingWinAppMainToolBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CFRoutingWinAppMainToolBar.Designer.cs">
+      <DependentUpon>CFRoutingWinAppMainToolBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <None Include="Resources\dt-logo.png" />
+    <None Include="Resources\Update2.png" />
+    <None Include="Resources\Settings.png" />
+    <None Include="Resources\Import2.png" />
+    <None Include="Resources\Export2.png" />
+    <EmbeddedResource Include="CFDispatchTrackExportOrders.resx">
+      <DependentUpon>CFDispatchTrackExportOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CFDispatchTrackImportOrders.resx">
+      <DependentUpon>CFDispatchTrackImportOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CFDispatchTrackConfiguration.resx">
+      <DependentUpon>CFDispatchTrackConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="CFRoutingWinAppMainToolBar.resx">
+      <DependentUpon>CFRoutingWinAppMainToolBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="dt-logo.png.ico" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.Release.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <None Include="App.Debug-AWS.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="TransformOnBuild" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <outputTypeExtension Condition="'$(OutputType)' == 'exe' or '$(OutputType)' == 'winexe'">exe</outputTypeExtension>
+      <outputTypeExtension Condition="'$(OutputType)' == 'Library'">dll</outputTypeExtension>
+    </PropertyGroup>
+    <TransformXml Condition="'$(AppCfgType)' == 'Web' and Exists('$(ConfigDir)\Web.Base.config') and Exists('$(ConfigDir)\Web.$(Configuration).config')" Source="$(ConfigDir)\Web.Base.config" Transform="$(ConfigDir)\Web.$(Configuration).config" Destination="Web.config" />
+    <TransformXml Condition="'$(AppCfgType)' == 'App' and $(InlineAppCfgTransforms) == true and Exists('$(ConfigDir)\App.Base.config') and Exists('$(ConfigDir)\App.$(Configuration).config')" Source="$(ConfigDir)\App.Base.config" Transform="$(ConfigDir)\App.$(Configuration).config" Destination="App.config" />
+    <MakeDir Condition="'$(AppCfgType)' == 'App' and $(InlineAppCfgTransforms) != true and Exists('App.config') and !Exists('$(OutDir)')" Directories="$(OutDir)" />
+    <TransformXml Condition="'$(AppCfgType)' == 'App' and $(InlineAppCfgTransforms) != true and Exists('App.config') and Exists('App.$(Configuration).config')" Source="App.config" Transform="App.$(Configuration).config" Destination="$(OutDir)$(AssemblyName).$(outputTypeExtension).config" />
+    <Copy Condition="'$(AppCfgType)' == 'Web' and Exists('$(ConfigDir)\Web.Base.config') and !Exists('$(ConfigDir)\Web.$(Configuration).config')" SourceFiles="$(ConfigDir)\Web.Base.config" DestinationFiles="Web.config" />
+    <Copy Condition="'$(AppCfgType)' == 'App' and $(InlineAppCfgTransforms) == true and Exists('$(ConfigDir)\App.Base.config') and !Exists('$(ConfigDir)\App.$(Configuration).config')" SourceFiles="$(ConfigDir)\App.Base.config" DestinationFiles="App.config" />
+    <Copy Condition="'$(AppCfgType)' == 'App' and $(InlineAppCfgTransforms) != true and Exists('App.config') and !Exists('App.$(Configuration).config')" SourceFiles="App.config" DestinationFiles="$(OutDir)$(AssemblyName).$(outputTypeExtension).config" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,10 @@
+**/packages/*
+!**/packages/repositories.config
+**/bin/
+**/obj/
+**/Resources/
+**/App.config
+**/App.Debug.config
+**/App.Release.config
+.vs/
+$tf/
