@@ -80,6 +80,7 @@ namespace RoutingWinApp
         public CFDispatchTrackImportOrders()
         {
             InitializeComponent();
+            this.cboRoutingWaveSub.Enabled = false;
             GetDlvSessionsSQL();
         }
 
@@ -287,6 +288,10 @@ namespace RoutingWinApp
 
         private void cboRoutingWave_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            ComboBox cmb = (ComboBox)sender;
+            int selectedIndex = cmb.SelectedIndex;
+
             DataRowView dtRow = (DataRowView)this.cboRoutingWave.SelectedItem;
             if (dtRow != (null))
             {
@@ -300,8 +305,34 @@ namespace RoutingWinApp
                 this.btnUpdateDrivers.Enabled = true;
 
             }
-            this.Refresh();
 
+            if (selectedIndex != -1)
+            {
+                string selectedValue = cmb.Text.ToString();
+                DateTime dateTime = this.dtRoutingDate.Value;
+                string selectedDate = String.Format("{2}-{1}-{0}", dateTime.Day, dateTime.Month, dateTime.Year);
+
+                DataAccess roadNetWaves = new DataAccess();
+                var dlvWaveInstance = roadNetWaves.GetSessionsMasterByDistributionCenter(selectedDate, selectedValue);
+
+                if (dlvWaveInstance.Rows.Count > 0)
+                {
+                    this.cboRoutingWaveSub.DataSource = null;
+                    this.cboRoutingWaveSub.Items.Clear();
+                    sessionsValues = dlvWaveInstance.AsEnumerable();
+                    this.cboRoutingWaveSub.DataSource = dlvWaveInstance;
+                    this.cboRoutingWaveSub.DisplayMember = "sessionname";
+                    this.cboRoutingWaveSub.ValueMember = "sessionid_pk";
+                    this.cboRoutingWaveSub.SelectedIndex = -1;
+                    this.txtProcessLog.Clear();
+                    this.cboRoutingWaveSub.Enabled = true;
+                } 
+                else
+                {
+                    this.cboRoutingWaveSub.Enabled = false;
+                }
+            }
+            this.Refresh();
         }
 
         private void btnUpdateDrivers_Click(object sender, EventArgs e)
@@ -650,5 +681,6 @@ namespace RoutingWinApp
             if (chkNoRegularInvoices.Checked && chkOnlyTransfers.Checked)
                 chkNoRegularInvoices.Checked = false;
         }
+
     }
 }

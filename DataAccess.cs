@@ -331,11 +331,31 @@ namespace RoutingWinApp
             //var conn = SqlDataConnection("CFRN");
             var conn = SqlDataConnection("CityFurnitureMaster");
             //using (SqlCommand cmd = new SqlCommand("GetSessionsMasterByDate", conn))
-            using (SqlCommand cmd = new SqlCommand("Routing.GetSessionsMasterByDate", conn))
+            // using (SqlCommand cmd = new SqlCommand("Routing.GetSessionsMasterByDate", conn))
+            using (SqlCommand cmd = new SqlCommand("Routing.Select_DC", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("@tDateToProcess", dateToProcess);
+                conn.Open();
+                reader = cmd.ExecuteReader();
+                dt.Load(reader);
+                conn.Close();
+                return dt;
+            }
+        }
+
+        public DataTable GetSessionsMasterByDistributionCenter(string dateToProcess, string DC)
+        {
+            SqlDataReader reader;
+            var dt = new DataTable();
+            var conn = SqlDataConnection("CityFurnitureMaster");
+            using (SqlCommand cmd = new SqlCommand("Routing.GetAvailableSessions", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+                cmd.Parameters.AddWithValue("@tDateToProcess", dateToProcess);
+                cmd.Parameters.AddWithValue("@DC", DC);
                 conn.Open();
                 reader = cmd.ExecuteReader();
                 dt.Load(reader);

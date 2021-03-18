@@ -38,12 +38,14 @@
             this.cboRoutingWave = new System.Windows.Forms.ComboBox();
             this.chkNoRegularInvoices = new System.Windows.Forms.CheckBox();
             this.grpBoxFilter = new System.Windows.Forms.GroupBox();
+            this.chkOnlyTransfers = new System.Windows.Forms.CheckBox();
             this.btnUpdateDrivers = new System.Windows.Forms.Button();
             this.bgwImportOrders = new System.ComponentModel.BackgroundWorker();
             this.bgwUpdateDTDrivers = new System.ComponentModel.BackgroundWorker();
             this.cmdReset = new System.Windows.Forms.Button();
             this.chkLockStatus = new System.Windows.Forms.CheckBox();
-            this.chkOnlyTransfers = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cboRoutingWaveSub = new System.Windows.Forms.ComboBox();
             this.grpProcess.SuspendLayout();
             this.grpBoxFilter.SuspendLayout();
             this.SuspendLayout();
@@ -83,9 +85,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(20, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 13);
+            this.label2.Size = new System.Drawing.Size(116, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Routing Wave:";
+            this.label2.Text = "Distribution Center:";
             // 
             // grpProcess
             // 
@@ -145,12 +147,24 @@
             this.grpBoxFilter.Controls.Add(this.chkOnlyTransfers);
             this.grpBoxFilter.Controls.Add(this.chkNoRegularInvoices);
             this.grpBoxFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpBoxFilter.Location = new System.Drawing.Point(23, 100);
+            this.grpBoxFilter.Location = new System.Drawing.Point(22, 155);
             this.grpBoxFilter.Name = "grpBoxFilter";
             this.grpBoxFilter.Size = new System.Drawing.Size(476, 84);
             this.grpBoxFilter.TabIndex = 2;
             this.grpBoxFilter.TabStop = false;
             this.grpBoxFilter.Text = "Wave Filters";
+            // 
+            // chkOnlyTransfers
+            // 
+            this.chkOnlyTransfers.AutoSize = true;
+            this.chkOnlyTransfers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkOnlyTransfers.Location = new System.Drawing.Point(16, 49);
+            this.chkOnlyTransfers.Name = "chkOnlyTransfers";
+            this.chkOnlyTransfers.Size = new System.Drawing.Size(157, 17);
+            this.chkOnlyTransfers.TabIndex = 1;
+            this.chkOnlyTransfers.Text = "Import transfer invoices only";
+            this.chkOnlyTransfers.UseVisualStyleBackColor = true;
+            this.chkOnlyTransfers.CheckedChanged += new System.EventHandler(this.chkOnlyTransfers_CheckedChanged);
             // 
             // btnUpdateDrivers
             // 
@@ -191,24 +205,32 @@
             this.chkLockStatus.AutoSize = true;
             this.chkLockStatus.Enabled = false;
             this.chkLockStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkLockStatus.Location = new System.Drawing.Point(22, 205);
+            this.chkLockStatus.Location = new System.Drawing.Point(22, 245);
             this.chkLockStatus.Name = "chkLockStatus";
             this.chkLockStatus.Size = new System.Drawing.Size(227, 17);
             this.chkLockStatus.TabIndex = 22;
             this.chkLockStatus.Text = "Check Lock Status for each Orders/Route";
             this.chkLockStatus.UseVisualStyleBackColor = true;
             // 
-            // chkOnlyTransfers
+            // label3
             // 
-            this.chkOnlyTransfers.AutoSize = true;
-            this.chkOnlyTransfers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkOnlyTransfers.Location = new System.Drawing.Point(16, 49);
-            this.chkOnlyTransfers.Name = "chkOnlyTransfers";
-            this.chkOnlyTransfers.Size = new System.Drawing.Size(157, 17);
-            this.chkOnlyTransfers.TabIndex = 1;
-            this.chkOnlyTransfers.Text = "Import transfer invoices only";
-            this.chkOnlyTransfers.UseVisualStyleBackColor = true;
-            this.chkOnlyTransfers.CheckedChanged += new System.EventHandler(this.chkOnlyTransfers_CheckedChanged);
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(19, 107);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "Routing Wave:";
+            // 
+            // cboRoutingWaveSub
+            // 
+            this.cboRoutingWaveSub.AllowDrop = true;
+            this.cboRoutingWaveSub.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboRoutingWaveSub.FormattingEnabled = true;
+            this.cboRoutingWaveSub.Location = new System.Drawing.Point(22, 123);
+            this.cboRoutingWaveSub.Name = "cboRoutingWaveSub";
+            this.cboRoutingWaveSub.Size = new System.Drawing.Size(262, 21);
+            this.cboRoutingWaveSub.TabIndex = 24;
             // 
             // CFDispatchTrackImportOrders
             // 
@@ -216,6 +238,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(736, 638);
+            this.Controls.Add(this.cboRoutingWaveSub);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.chkLockStatus);
             this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.btnUpdateDrivers);
@@ -260,6 +284,8 @@
         private System.Windows.Forms.Button cmdReset;
         private System.Windows.Forms.CheckBox chkLockStatus;
         private System.Windows.Forms.CheckBox chkOnlyTransfers;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.ComboBox cboRoutingWaveSub;
     }
 }
 
