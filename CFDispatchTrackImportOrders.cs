@@ -92,8 +92,12 @@ namespace RoutingWinApp
                 if (this.cboRoutingWave.Text.Length > 0)
                 {
                     keepOpen = true;
-                    importingWave = cboRoutingWave.SelectedValue.ToString();
-                    importingWaveDesc = cboRoutingWave.Text.ToString();
+                    
+                    //importingWave = cboRoutingWave.SelectedValue.ToString();
+                    //importingWaveDesc = cboRoutingWave.Text.ToString();
+                    importingWave = cboRoutingWaveSub.SelectedValue.ToString();
+                    importingWaveDesc = cboRoutingWaveSub.Text.ToString();
+
                     dtRoutingDate.Enabled = false;
                     cboRoutingWave.Enabled = false;
                     grpBoxFilter.Enabled = false;
