@@ -231,6 +231,7 @@
             this.cboRoutingWaveSub.Name = "cboRoutingWaveSub";
             this.cboRoutingWaveSub.Size = new System.Drawing.Size(262, 21);
             this.cboRoutingWaveSub.TabIndex = 24;
+            this.cboRoutingWaveSub.SelectedIndexChanged += new System.EventHandler(this.cboRoutingWaveSub_SelectedIndexChanged);
             // 
             // CFDispatchTrackImportOrders
             // 

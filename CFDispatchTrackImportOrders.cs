@@ -32,6 +32,7 @@ namespace RoutingWinApp
         private int stop;
         private string invoice;
         private string clientName;
+
         public Stop(int pStop, string pInvoice, string pClientName)
         {
             stop = pStop;
@@ -80,6 +81,7 @@ namespace RoutingWinApp
         public CFDispatchTrackImportOrders()
         {
             InitializeComponent();
+            this.cmdImportOrders.Enabled = false;
             this.cboRoutingWaveSub.Enabled = false;
             GetDlvSessionsSQL();
         }
@@ -316,13 +318,14 @@ namespace RoutingWinApp
                 DateTime dateTime = this.dtRoutingDate.Value;
                 string selectedDate = String.Format("{2}-{1}-{0}", dateTime.Day, dateTime.Month, dateTime.Year);
 
+                this.flag = 0;
+                this.cboRoutingWaveSub.DataSource = null;
+                this.cboRoutingWaveSub.Items.Clear();
+
                 DataAccess roadNetWaves = new DataAccess();
                 var dlvWaveInstance = roadNetWaves.GetSessionsMasterByDistributionCenter(selectedDate, selectedValue);
-
                 if (dlvWaveInstance.Rows.Count > 0)
                 {
-                    this.cboRoutingWaveSub.DataSource = null;
-                    this.cboRoutingWaveSub.Items.Clear();
                     sessionsValues = dlvWaveInstance.AsEnumerable();
                     this.cboRoutingWaveSub.DataSource = dlvWaveInstance;
                     this.cboRoutingWaveSub.DisplayMember = "sessionname";
@@ -484,7 +487,8 @@ namespace RoutingWinApp
             cboRoutingWave.Enabled = true;
             grpBoxFilter.Enabled = true;
             cmdReset.Enabled = true;
-            cmdImportOrders.Enabled = true;
+            //cmdImportOrders.Enabled = true;
+            cmdImportOrders.Enabled = false;
             btnUpdateDrivers.Enabled = true;
 
             keepOpen = false;
@@ -616,9 +620,9 @@ namespace RoutingWinApp
                         string requestDate = DtSelectedDate.ToString("yyyyMMdd");
                         string url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "") + apiImportDrivers + requestDate + "/" + currentProcessId;
 
-                        NodeAPI.UpdateDriversInformation(url);
-
-                        MessageBox.Show("Update Drivers process complete.");
+                        string reply = NodeAPI.UpdateDriversInformation(url);
+                        MessageBox.Show(reply);
+                        //MessageBox.Show("Update Drivers process complete.");
 
                     }
                     else
@@ -645,7 +649,8 @@ namespace RoutingWinApp
             cboRoutingWave.Enabled = true;
             grpBoxFilter.Enabled = true;
             cmdReset.Enabled = true;
-            cmdImportOrders.Enabled = true;
+            //cmdImportOrders.Enabled = true;
+            cmdImportOrders.Enabled = false;
             btnUpdateDrivers.Enabled = true;
 
             keepOpen = false;
@@ -653,13 +658,15 @@ namespace RoutingWinApp
 
         private void cmdReset_Click(object sender, EventArgs e)
         {
+            this.flag = 0;
             DtSelectedDate = System.DateTime.Now;
             dtRoutingDate.Value = DtSelectedDate;
             dtRoutingDate.Enabled = true;
             cboRoutingWave.Enabled = true;
             cmdReset.Enabled = true;
             grpBoxFilter.Enabled = true;
-            cmdImportOrders.Enabled = true;
+            //cmdImportOrders.Enabled = true;
+            cmdImportOrders.Enabled = false;
             btnUpdateDrivers.Enabled = true;
             txtProcessLog.Clear();
             JobProgressBar.Style = ProgressBarStyle.Blocks;
@@ -686,5 +693,26 @@ namespace RoutingWinApp
                 chkNoRegularInvoices.Checked = false;
         }
 
+        int flag = 0;
+        private void cboRoutingWaveSub_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            int selectedIndex = cmb.SelectedIndex;
+            string text = this.cboRoutingWaveSub.Text.ToString();
+
+            if (!cmb.Text.Equals("System.Data.DataRowView"))
+            {
+                flag++;
+            }
+
+            if (flag >= 2 && cboRoutingWaveSub.DataSource != null && selectedIndex >= 0)
+            {
+                this.cmdImportOrders.Enabled = true;
+            }
+            else
+            {
+                this.cmdImportOrders.Enabled = false;
+            }
+        }
     }
 }

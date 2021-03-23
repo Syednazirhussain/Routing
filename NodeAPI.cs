@@ -40,7 +40,7 @@ namespace RoutingWinApp
 
     public class NodeAPI
     {
-        public static bool UpdateDriversInformation(string url)
+        public static string UpdateDriversInformation(string url)
         {
             CFDispatchTrackApplicationSettings loAppSettings = new CFDispatchTrackApplicationSettings();
 
@@ -54,15 +54,16 @@ namespace RoutingWinApp
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
                     dynamic json = JsonConvert.DeserializeObject(result);
-                    string error = json.error;
-                    return error.Trim().Length == 0;
+                    return json.message;
+                    //string error = json.error;
+                    // return error.Trim().Length == 0;
                 }
-                else
-                    return false;
+
+                return response.ReasonPhrase.ToString();
             }
             catch (Exception e)
             {
-                throw e;
+                return e.Message.ToString();
             }
         }
 
