@@ -304,6 +304,52 @@ namespace RoutingWinApp
             }
         }
 
+        public List<Tuple<decimal, string>> GetLogs_wDisplaySequence(int processId, decimal lastLogProcessed)
+        {
+            List<Tuple<decimal, string>> logs = new List<Tuple<decimal, string>>();
+            SqlConnection conn = null;
+            try
+            {
+                //string query = "SELECT id, [message] ";
+                //query += "      FROM Routing.Process_Logs ";
+                //query += "      WHERE process_id = " + processId + " AND ";
+                //query += "            id > " + lastLogProcessed;
+                //query += "      ORDER BY id ASC ";
+
+                //string query = "SELECT id, [message] FROM Routing.Process_Logs WHERE process_id = " + processId + " AND id > " + lastLogProcessed + " ORDER BY display_sequence desc";
+
+                string query = "EXEC Routing.sp_Get_Logs_wDisplaySequence @process_id = " + processId + ", @last_log_processed = " + lastLogProcessed;
+
+                SqlDataReader reader;
+                var dt = new DataTable();
+                conn = SqlDataConnection("CityFurnitureMaster");
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = conn;
+                    conn.Open();
+                    reader = cmd.ExecuteReader();
+                    dt.Load(reader);
+                    string currentMessage = "";
+                    decimal currentid = 0;
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        currentMessage = row.Field<string>("message");
+                        currentid = row.Field<decimal>("display_sequence");
+                        logs.Add(new Tuple<decimal, string>(currentid, currentMessage));
+                    }
+                }
+            }
+            catch (Exception e) { }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+            }
+            return logs;
+        }
+
+
         public DataTable GetSessionsMasterBySessionID(int sessionId, int viewMode)
         {
             SqlDataReader reader;
@@ -332,11 +378,33 @@ namespace RoutingWinApp
             var conn = SqlDataConnection("CityFurnitureMaster");
             //using (SqlCommand cmd = new SqlCommand("GetSessionsMasterByDate", conn))
             // using (SqlCommand cmd = new SqlCommand("Routing.GetSessionsMasterByDate", conn))
-            using (SqlCommand cmd = new SqlCommand("Routing.Select_DC", conn))
+            using (SqlCommand cmd = new SqlCommand("Routing.GetDCMasterByDate", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Connection = conn;
                 cmd.Parameters.AddWithValue("@tDateToProcess", dateToProcess);
+                conn.Open();
+                reader = cmd.ExecuteReader();
+                dt.Load(reader);
+                conn.Close();
+                return dt;
+            }
+        }
+
+        public DataTable GetSessionsMasterByDateExport(DateTime dateToProcess, string DC)
+        {
+            SqlDataReader reader;
+            var dt = new DataTable();
+            //var conn = SqlDataConnection("CFRN");
+            var conn = SqlDataConnection("CityFurnitureMaster");
+            //using (SqlCommand cmd = new SqlCommand("GetSessionsMasterByDate", conn))
+            // using (SqlCommand cmd = new SqlCommand("Routing.GetSessionsMasterByDate", conn))
+            using (SqlCommand cmd = new SqlCommand("Routing.GetSessionsMasterByDate", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = conn;
+                cmd.Parameters.AddWithValue("@tDateToProcess", dateToProcess);
+                cmd.Parameters.AddWithValue("@DC", DC);
                 conn.Open();
                 reader = cmd.ExecuteReader();
                 dt.Load(reader);

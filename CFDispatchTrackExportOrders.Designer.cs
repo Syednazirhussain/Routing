@@ -51,6 +51,8 @@
             this.bgwLoadingRoutes = new System.ComponentModel.BackgroundWorker();
             this.lblNodesSelected = new System.Windows.Forms.Label();
             this.txtExportAlert = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cboBuildRoutingWaveSub = new System.Windows.Forms.ComboBox();
             this.grpProcess.SuspendLayout();
             this.opgExportMode.SuspendLayout();
             this.SuspendLayout();
@@ -76,7 +78,7 @@
             // 
             this.cmdExportOrders.Enabled = false;
             this.cmdExportOrders.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdExportOrders.Location = new System.Drawing.Point(376, 221);
+            this.cmdExportOrders.Location = new System.Drawing.Point(376, 258);
             this.cmdExportOrders.Name = "cmdExportOrders";
             this.cmdExportOrders.Size = new System.Drawing.Size(300, 43);
             this.cmdExportOrders.TabIndex = 3;
@@ -88,9 +90,9 @@
             // 
             this.grpProcess.Controls.Add(this.JobProgressBar);
             this.grpProcess.Controls.Add(this.txtProcessLog);
-            this.grpProcess.Location = new System.Drawing.Point(22, 266);
+            this.grpProcess.Location = new System.Drawing.Point(22, 308);
             this.grpProcess.Name = "grpProcess";
-            this.grpProcess.Size = new System.Drawing.Size(651, 317);
+            this.grpProcess.Size = new System.Drawing.Size(651, 275);
             this.grpProcess.TabIndex = 10;
             this.grpProcess.TabStop = false;
             this.grpProcess.Text = "Process Result";
@@ -118,7 +120,7 @@
             this.cboBuildRoutingWave.AllowDrop = true;
             this.cboBuildRoutingWave.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboBuildRoutingWave.FormattingEnabled = true;
-            this.cboBuildRoutingWave.Location = new System.Drawing.Point(102, 110);
+            this.cboBuildRoutingWave.Location = new System.Drawing.Point(118, 110);
             this.cboBuildRoutingWave.Name = "cboBuildRoutingWave";
             this.cboBuildRoutingWave.Size = new System.Drawing.Size(456, 21);
             this.cboBuildRoutingWave.TabIndex = 1;
@@ -139,7 +141,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 153);
+            this.label2.Location = new System.Drawing.Point(19, 187);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 13);
             this.label2.TabIndex = 15;
@@ -157,17 +159,17 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 110);
+            this.label3.Location = new System.Drawing.Point(19, 118);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 13);
+            this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 17;
-            this.label3.Text = "Sessions:";
+            this.label3.Text = "Distribution Center";
             // 
             // opgExportMode
             // 
             this.opgExportMode.Controls.Add(this.chkVerified);
             this.opgExportMode.Controls.Add(this.opgBuildRoutes);
-            this.opgExportMode.Location = new System.Drawing.Point(102, 137);
+            this.opgExportMode.Location = new System.Drawing.Point(99, 171);
             this.opgExportMode.Name = "opgExportMode";
             this.opgExportMode.Size = new System.Drawing.Size(456, 77);
             this.opgExportMode.TabIndex = 18;
@@ -262,10 +264,29 @@
             // txtExportAlert
             // 
             this.txtExportAlert.BackColor = System.Drawing.SystemColors.Window;
-            this.txtExportAlert.Location = new System.Drawing.Point(253, 234);
+            this.txtExportAlert.Location = new System.Drawing.Point(253, 271);
             this.txtExportAlert.Name = "txtExportAlert";
             this.txtExportAlert.Size = new System.Drawing.Size(100, 20);
             this.txtExportAlert.TabIndex = 25;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 144);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "Sessions:";
+            // 
+            // cboBuildRoutingWaveSub
+            // 
+            this.cboBuildRoutingWaveSub.AllowDrop = true;
+            this.cboBuildRoutingWaveSub.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBuildRoutingWaveSub.FormattingEnabled = true;
+            this.cboBuildRoutingWaveSub.Location = new System.Drawing.Point(118, 136);
+            this.cboBuildRoutingWaveSub.Name = "cboBuildRoutingWaveSub";
+            this.cboBuildRoutingWaveSub.Size = new System.Drawing.Size(456, 21);
+            this.cboBuildRoutingWaveSub.TabIndex = 26;
             // 
             // CFDispatchTrackExportOrders
             // 
@@ -273,6 +294,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(1121, 595);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cboBuildRoutingWaveSub);
             this.Controls.Add(this.txtExportAlert);
             this.Controls.Add(this.lblNodesSelected);
             this.Controls.Add(this.cmdExportOrders);
@@ -330,6 +353,8 @@
         private System.ComponentModel.BackgroundWorker bgwLoadingRoutes;
         private System.Windows.Forms.Label lblNodesSelected;
         private System.Windows.Forms.TextBox txtExportAlert;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.ComboBox cboBuildRoutingWaveSub;
     }
 }
 

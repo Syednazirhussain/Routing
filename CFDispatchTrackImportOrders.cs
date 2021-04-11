@@ -32,7 +32,6 @@ namespace RoutingWinApp
         private int stop;
         private string invoice;
         private string clientName;
-
         public Stop(int pStop, string pInvoice, string pClientName)
         {
             stop = pStop;
@@ -94,12 +93,10 @@ namespace RoutingWinApp
                 if (this.cboRoutingWave.Text.Length > 0)
                 {
                     keepOpen = true;
-                    
                     //importingWave = cboRoutingWave.SelectedValue.ToString();
                     //importingWaveDesc = cboRoutingWave.Text.ToString();
                     importingWave = cboRoutingWaveSub.SelectedValue.ToString();
                     importingWaveDesc = cboRoutingWaveSub.Text.ToString();
-
                     dtRoutingDate.Enabled = false;
                     cboRoutingWave.Enabled = false;
                     grpBoxFilter.Enabled = false;
@@ -294,10 +291,8 @@ namespace RoutingWinApp
 
         private void cboRoutingWave_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             ComboBox cmb = (ComboBox)sender;
             int selectedIndex = cmb.SelectedIndex;
-
             DataRowView dtRow = (DataRowView)this.cboRoutingWave.SelectedItem;
             if (dtRow != (null))
             {
@@ -333,7 +328,7 @@ namespace RoutingWinApp
                     this.cboRoutingWaveSub.SelectedIndex = -1;
                     this.txtProcessLog.Clear();
                     this.cboRoutingWaveSub.Enabled = true;
-                } 
+                }
                 else
                 {
                     this.cboRoutingWaveSub.Enabled = false;
@@ -390,7 +385,7 @@ namespace RoutingWinApp
             }
 
             if (lbValidate == true)
-            { 
+            {
                 try
                 {
                     bool stopExport;
@@ -437,9 +432,9 @@ namespace RoutingWinApp
                         //    url = apiHost + ":" + apiPort + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/ALL/" + currentProcessId;
                         //else
                         //    url = apiHost + ":" + apiPort + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/NRI/" + currentProcessId ;
-                        if(chkNoRegularInvoices.Checked)
-                            url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "" ) + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/NRI/" + currentProcessId;
-                        else if(chkOnlyTransfers.Checked)
+                        if (chkNoRegularInvoices.Checked)
+                            url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "") + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/NRI/" + currentProcessId;
+                        else if (chkOnlyTransfers.Checked)
                             url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "") + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/TRA/" + currentProcessId;
                         else
                             url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "") + apiImportOrders + warehouseId + "/" + date + "/" + importingWave + "/ALL/" + currentProcessId;
@@ -451,28 +446,38 @@ namespace RoutingWinApp
                         bool res = NodeAPI.UploadOrdersData(url, out aSyncResponse);
 
                         Cursor.Current = Cursors.Default;
-
+                        Thread.Sleep(1000);
                         if (!res)
                         {
+                            tokenSource.Cancel();
                             MessageBox.Show("Unsuccessful call to node.js api. Reason Phrase: " + aSyncResponse.ReasonPhrase);
                         }
                         else
                         {
                             bgwImportOrders.ReportProgress(100);
+                            tokenSource.Cancel();
                             MessageBox.Show("Orders successfully imported.");
                         }
                     }
                     else
+                    {
+                        tokenSource.Cancel();
                         MessageBox.Show("Error while creating the process.");
+                    }
 
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show(error.ToString());
+                    //MessageBox.Show(error.ToString());
+                    //MessageBox.Show(error.Message.ToString());
+                    //MessageBox.Show("No Orders Found to Import");
+                    tokenSource.Cancel();
+                    MessageBox.Show("No Orders Found to Import", "Import Orders from AS400", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); //Text, caption
                 }
             }
-            Thread.Sleep(1000);
-            tokenSource.Cancel();  //this change the value of token.IsCancellationRequested from 'false' to 'true', stopping the while loop in method ProcessLogs
+            //Thread.Sleep(1000);
+            //tokenSource.Cancel();  //this change the value of token.IsCancellationRequested from 'false' to 'true', stopping the while loop in method ProcessLogs
+            tokenSource.Dispose();
         }
 
         private void bgwImportOrders_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -494,11 +499,12 @@ namespace RoutingWinApp
             keepOpen = false;
         }
 
-        delegate void ShowLogMessagesDelegate(string text);
+        delegate void ShowLogMessagesDelegate(List<Tuple<decimal, string>> LogMessages);
 
         private async void RunProcessLogs(CancellationToken ct, string processCode, int processId)
         {
-            var progress = new Progress<Tuple<string, bool>>(t => ShowLogMessages(t.Item1));
+            //var progress = new Progress<Tuple<string, bool>>(t => ShowLogMessages(t.Item1));
+            var progress = new Progress<Tuple<string, bool>>(t => ShowLogMessages(new List<Tuple<decimal, string>> { new Tuple<decimal, string>(0, t.Item1) }));
             await Task.Factory.StartNew(() => ProcessLogs(progress, ct, processCode, processId), ct);
         }
 
@@ -507,8 +513,8 @@ namespace RoutingWinApp
             try
             {
                 progress.Report(new Tuple<string, bool>("", true));
-                List<Tuple<int, string>> currentLogs = new List<Tuple<int, string>>();
-                int lastLog = 0;
+                List<Tuple<decimal, string>> currentLogs = new List<Tuple<decimal, string>>();
+                decimal lastLog = 0;
                 DataAccess da = new DataAccess();
                 //string processCode = ProcessCode.IMPORT.ToString();
                 //int processId = da.GetRunningProcess(processCode);
@@ -517,13 +523,13 @@ namespace RoutingWinApp
                 {
                     while (!ct.IsCancellationRequested)
                     {
-                        currentLogs = da.GetLogs(processId, lastLog);
-                        foreach (var log in currentLogs)
+                        currentLogs = da.GetLogs_wDisplaySequence(processId, lastLog);
+                        //txtProcessLog.Clear();
+                        //txtProcessLog.Text = "";
+
+                        if (currentLogs.Count > 0)
                         {
-                            lastLog = log.Item1;
-                            currentLog = log.Item2;
-                            //progress.Report(new Tuple<string, bool>(currentLog + Environment.NewLine, false));
-                            ShowLogMessages(currentLog + Environment.NewLine);
+                            ShowLogMessages(currentLogs);
                         }
                     }
                     da.FinishProcess(processCode, processId);
@@ -539,43 +545,50 @@ namespace RoutingWinApp
             }
         }
 
-        private void ShowLogMessages(string message)
+        private void ShowLogMessages(List<Tuple<decimal, string>> LogMessages)
         {
             if (txtProcessLog.InvokeRequired)
             {
                 ShowLogMessagesDelegate d = new ShowLogMessagesDelegate(ShowLogMessages);
-                Invoke(d, new object[] { message });
+                //Invoke(d, new object[] { message });
+                Invoke(d, LogMessages);
             }
             else
             {
-                //txtProcessLog.Text = message + txtProcessLog.Text;
+                txtProcessLog.Clear();
+                LogMessages = LogMessages.OrderByDescending(x => x.Item1).ToList();
+                LogMessages.Reverse();
 
-
-                //txtProcessLog.Text = txtProcessLog.Text.Insert(0, message);
-
-                Color colorToUse;
-                if (message.StartsWith("g__"))
+                foreach (var newmessage in LogMessages)
                 {
-                    message = message.Substring(3);
-                    colorToUse = Color.Green;
-                }
-                else if (message.StartsWith("r__"))
-                {
-                    message = message.Substring(3);
-                    colorToUse = Color.Red;
-                }
-                else
-                    colorToUse = Color.Black;
-                txtProcessLog.SelectAll();
-                string oldText = txtProcessLog.SelectedRtf;
+                    Color colorToUse;
+                    string message = newmessage.Item2;
+                    if (message.StartsWith("g__"))
+                    {
+                        message = message.Substring(3);
+                        colorToUse = Color.Green;
+                    }
+                    else if (message.StartsWith("r__"))
+                    {
+                        message = message.Substring(3);
+                        colorToUse = Color.Red;
+                    }
+                    else
+                    {
+                        colorToUse = Color.Black;
+                    }
 
-                txtProcessLog.Text = message;
-                txtProcessLog.Select(0, message.Length);
-                txtProcessLog.SelectionColor = colorToUse;
-                txtProcessLog.DeselectAll();
-                txtProcessLog.SelectionStart = txtProcessLog.TextLength;
-                txtProcessLog.SelectedRtf = oldText;
-                txtProcessLog.DeselectAll();
+                    txtProcessLog.SelectAll();
+                    string oldText = txtProcessLog.SelectedRtf;
+
+                    txtProcessLog.Text = message + Environment.NewLine;
+                    txtProcessLog.Select(0, message.Length);
+                    txtProcessLog.SelectionColor = colorToUse;
+                    txtProcessLog.DeselectAll();
+                    txtProcessLog.SelectionStart = txtProcessLog.TextLength;
+                    txtProcessLog.SelectedRtf = oldText;
+                    txtProcessLog.DeselectAll();
+                }
             }
         }
 
@@ -621,8 +634,8 @@ namespace RoutingWinApp
                         string url = apiHost + (apiPort.Trim().Length > 0 ? ":" + apiPort : "") + apiImportDrivers + requestDate + "/" + currentProcessId;
 
                         string reply = NodeAPI.UpdateDriversInformation(url);
-                        MessageBox.Show(reply);
-                        //MessageBox.Show("Update Drivers process complete.");
+                        //MessageBox.Show(reply);
+                        MessageBox.Show("Update Drivers process complete.");
 
                     }
                     else
@@ -692,7 +705,6 @@ namespace RoutingWinApp
             if (chkNoRegularInvoices.Checked && chkOnlyTransfers.Checked)
                 chkNoRegularInvoices.Checked = false;
         }
-
         int flag = 0;
         private void cboRoutingWaveSub_SelectedIndexChanged(object sender, EventArgs e)
         {

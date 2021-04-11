@@ -163,7 +163,7 @@ namespace RoutingWinApp
             sessionsValues = dlvWaveInstance.AsEnumerable();
 
             this.cboBuildRoutingWave.DataSource = dlvWaveInstance;
-            this.cboBuildRoutingWave.DisplayMember = "SessionName";
+            this.cboBuildRoutingWave.DisplayMember = "sessionName";
             this.cboBuildRoutingWave.ValueMember = "sessionid_pk";
             this.cboBuildRoutingWave.SelectedIndex = -1;
             this.txtProcessLog.Clear();
@@ -560,10 +560,33 @@ namespace RoutingWinApp
 			try 
 			{
 				SelectSessionIdentityID = (int)cmb.SelectedValue;
-                SelectSessionName = cmb.Text;
+                SelectSessionName = cmb.Text.ToString();
                 exportingWave = cboBuildRoutingWave.SelectedValue.ToString();
+
+                DateTime dateTime = this.dtRoutingDate.Value;
+                //string selectedDate = String.Format("{2}-{1}-{0}", dateTime.Day, dateTime.Month, dateTime.Year);
+
+                this.cboBuildRoutingWaveSub.DataSource = null;
+                this.cboBuildRoutingWaveSub.Items.Clear();
+
+                DataAccess da = new DataAccess();
+                var dlvWaveInstance = da.GetSessionsMasterByDateExport(dateTime, SelectSessionName);
+                if (dlvWaveInstance.Rows.Count > 0)
+                {
+                    sessionsValues = dlvWaveInstance.AsEnumerable();
+                    this.cboBuildRoutingWaveSub.DataSource = dlvWaveInstance;
+                    this.cboBuildRoutingWaveSub.DisplayMember = "sessionname";
+                    this.cboBuildRoutingWaveSub.ValueMember = "sessionid_pk";
+                    this.cboBuildRoutingWaveSub.SelectedIndex = -1;
+                    this.txtProcessLog.Clear();
+                    this.cboBuildRoutingWaveSub.Enabled = true;
+                }
+                else
+                {
+                    this.cboBuildRoutingWaveSub.Enabled = false;
+                }
             }
-			catch
+            catch
 			{
 				SelectSessionIdentityID = 0;
                 SelectSessionName = "";
@@ -571,7 +594,60 @@ namespace RoutingWinApp
 			}
         }
 
-		private void cmdReset_Click(object sender, EventArgs e)
+        //private void cboBuildRoutingWave_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ComboBox cmb = (ComboBox)sender;
+        //    int selectedIndex = cmb.SelectedIndex;
+        //    DataRowView dtRow = (DataRowView)cboBuildRoutingWave.SelectedItem;
+        //    if (dtRow != (null))
+        //    {
+        //        this.chkNoRegularInvoices.Enabled = true;
+        //        this.chkNoRegularInvoices.Checked = false;
+        //        this.btnUpdateDrivers.Enabled = false;
+        //    }
+        //    else
+        //    {
+        //        this.chkNoRegularInvoices.Checked = false;
+        //        this.btnUpdateDrivers.Enabled = true;
+
+        //    }
+
+        //    if (selectedIndex != -1)
+        //    {
+        //        string selectedValue = cmb.Text.ToString();
+        //        DateTime dateTime = this.dtRoutingDate.Value;
+        //        string selectedDate = String.Format("{2}-{1}-{0}", dateTime.Day, dateTime.Month, dateTime.Year);
+
+        //        this.flag = 0;
+        //        this.cboRoutingWaveSub.DataSource = null;
+        //        this.cboRoutingWaveSub.Items.Clear();
+
+        //        DataAccess roadNetWaves = new DataAccess();
+        //        var dlvWaveInstance = roadNetWaves.GetSessionsMasterByDistributionCenter(selectedDate, selectedValue);
+        //        if (dlvWaveInstance.Rows.Count > 0)
+        //        {
+        //            sessionsValues = dlvWaveInstance.AsEnumerable();
+        //            this.cboRoutingWaveSub.DataSource = dlvWaveInstance;
+        //            this.cboRoutingWaveSub.DisplayMember = "sessionname";
+        //            this.cboRoutingWaveSub.ValueMember = "sessionid_pk";
+        //            this.cboRoutingWaveSub.SelectedIndex = -1;
+        //            this.txtProcessLog.Clear();
+        //            this.cboRoutingWaveSub.Enabled = true;
+        //        }
+        //        else
+        //        {
+        //            this.cboRoutingWaveSub.Enabled = false;
+        //        }
+        //    }
+        //    this.Refresh();
+        //}
+
+
+
+
+
+
+        private void cmdReset_Click(object sender, EventArgs e)
 		{
 			DtSelectedDate = System.DateTime.Now;
 			dtRoutingDate.Value = DtSelectedDate;
